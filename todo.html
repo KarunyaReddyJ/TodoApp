@@ -4,86 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo List</title>
-    <style>
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0000003b;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        #todo-container {
-            max-width: 400px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        h2 {
-            background-color: #3498db;
-            color: #fff;
-            margin: 0;
-            padding: 20px;
-            font-size: 1.5em;
-            text-align: center;
-        }
-
-        input[type="text"], input[type="date"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
-            box-sizing: border-box; 
-        }
-
-        button {
-            background-color: #3498db;
-            color: #fff;
-            border: none;
-            padding: 10px;
-            margin: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 1em;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #258cd1;
-        }
-
-        #todos {
-            padding: 20px;
-        }
-
-        .todo-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #fff;
-            transition: background-color 0.3s ease;
-        }
-
-        .complete {
-            text-decoration: line-through;
-            color: #888;
-        }
-
-        .missed {
-            background-color: #ffcccc;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -95,74 +16,8 @@
 
     <div id="todos"></div>
 </div>
-<script>
-    
-    function addTodo() {
-        const todoInput = document.getElementById('todo-input');
-        const date=document.getElementById('todo-date')
-        const todoText = todoInput.value.trim();
-        const deadline = date.value
-        if (todoText !== '' && deadline) {
-            const todoItem = { text: todoText, complete: false, deadline: deadline };
-            saveTodo(todoItem);
-            todoInput.value = '';
-            displayTodos();
-        }
-        else{
-            alert('Task or Date is missing')
-        }
-    }
-
-    function saveTodo(todoItem) {
-        let todos = JSON.parse(localStorage.getItem('todos')) || [];
-        todos.push(todoItem);
-        localStorage.setItem('todos', JSON.stringify(todos));
-    }
-
-    function displayTodos() {
-        const todosContainer = document.getElementById('todos');
-        todosContainer.innerHTML = '';
-
-        const todos = JSON.parse(localStorage.getItem('todos')) || [];
-
-        todos.forEach((todo, index) => {
-            const todoDiv = document.createElement('div');
-            todoDiv.className = `todo-item ${todo.complete ? 'complete' : ''} ${isMissed(todo.deadline, todo.complete) ? 'missed' : ''}`;
-            todoDiv.innerHTML = `
-                <span>${todo.text}</span>
-                <span>${todo.deadline ? 'Deadline: ' + todo.deadline : ''}</span>
-                <button onclick="toggleComplete(${index})">${todo.complete ? 'Undo' : 'Complete'}</button>
-                <button onclick="deleteTodo(${index})">Delete</button>
-            `;
-            todosContainer.appendChild(todoDiv);
-        });
-    }
-
-    function toggleComplete(index) {
-        let todos = JSON.parse(localStorage.getItem('todos')) || [];
-        todos[index].complete = !todos[index].complete;
-        localStorage.setItem('todos', JSON.stringify(todos));
-        displayTodos();
-    }
-    
-    function deleteTodo(index) {
-        let todos = JSON.parse(localStorage.getItem('todos')) || [];
-        todos.splice(index, 1);
-        localStorage.setItem('todos', JSON.stringify(todos));
-        displayTodos();
-    }
-
-    function isMissed(deadline, complete) {
-        if (deadline && !complete) {
-            const today = new Date();
-            const deadlineDate = new Date(deadline);
-            return deadlineDate < today;
-        }
-        return false;
-    }
-
-    
-    displayTodos();
+<script src="script.js">
+  
 </script>
 
 
